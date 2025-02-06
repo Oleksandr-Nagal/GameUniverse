@@ -4,33 +4,55 @@ using Microsoft.EntityFrameworkCore;
 using GameUniverse.Data;
 using GameUniverse.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
-public class AdminController : Controller
+namespace GameUniverse.Controllers
 {
-    private readonly GameUniverseContext _context;
-
-    public AdminController(GameUniverseContext context)
+    public class AdminController : Controller
     {
-        _context = context;
-    }
+        private readonly GameUniverseContext _context;
 
-    public IActionResult Index()
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
+        public AdminController(GameUniverseContext context)
         {
-            return RedirectToAction("Login", "Account");
-        }
-        return View();
-    }
-
-    public IActionResult Users()
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
-        {
-            return RedirectToAction("Login", "Account");
+            _context = context;
         }
 
-        var users = _context.Users.ToList();
-        return View(users);
+        public IActionResult Index()
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+        public IActionResult Users()
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var users = _context.Users.ToList();
+            return View(users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Users");
+        }
     }
 }

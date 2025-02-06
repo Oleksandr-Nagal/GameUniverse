@@ -35,7 +35,6 @@ namespace GameUniverse.Controllers
             }
         }
 
-
         public IActionResult AdminIndex()
         {
             if (HttpContext.Session.GetString("IsAdmin") != "true")

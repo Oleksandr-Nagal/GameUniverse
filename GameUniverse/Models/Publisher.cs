@@ -8,10 +8,10 @@ namespace GameUniverse.Models
         public int Id { get; set; }
 
         [Required, MaxLength(100)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        public string Website { get; set; }
+        public string? Website { get; set; }
 
-        public string Country { get; set; }
+        public string? Country { get; set; }
     }
 }

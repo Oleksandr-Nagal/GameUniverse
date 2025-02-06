@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using GameUniverse.Models;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Xml.Linq;
+﻿using GameUniverse.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameUniverse.Data
 {
@@ -13,18 +9,14 @@ namespace GameUniverse.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Game> Games { get; set; }
-        public DbSet<Review> Reviews { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Developer> Developers { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Platform> Platforms { get; set; }
-        public DbSet<Achievement> Achievements { get; set; }
-        public DbSet<Comments> Comments { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);  
         }
     }
 }

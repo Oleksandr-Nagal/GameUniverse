@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Користувачі";
 }
+
 <h1 class="text-center">Список Користувачів</h1>
 
 <table class="table">
@@ -22,7 +23,7 @@
                 <td>@user.Email</td>
                 <td>@(user.IsAdmin ? "Адмін" : "Користувач")</td>
                 <td>
-                    <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                    <form asp-controller="Admin" asp-action="DeleteUser" method="post" class="d-inline">
                         <input type="hidden" name="userId" value="@user.Id" />
                         <button type="submit" class="btn btn-danger">Видалити</button>
                     </form>

@@ -1,139 +1,112 @@
-﻿using GameUniverse.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using GameUniverse.Data;
 using GameUniverse.Models;
-using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
-public class CatalogController : Controller
+namespace GameUniverse.Controllers
 {
-    private readonly GameUniverseContext _context;
-
-    public CatalogController(GameUniverseContext context)
+    public class CatalogController : Controller
     {
-        _context = context;
-    }
+        private readonly GameUniverseContext _context;
 
-    public IActionResult Index()
-    {
-        var games = _context.Games.ToList();
-        return View(games);
-    }
-
-    public IActionResult Details(int id)
-    {
-        var game = _context.Games.FirstOrDefault(g => g.Id == id);
-        if (game == null)
+        public CatalogController(GameUniverseContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        var userId = HttpContext.Session.GetString("UserId");
-        if (userId != null)
+        public IActionResult Index()
         {
-            var isInWishlist = _context.Wishlist.Any(w => w.UserId == int.Parse(userId) && w.GameId == id);
-            ViewBag.IsInWishlist = isInWishlist;
+            var games = _context.Games.ToList();
+            return View(games);
         }
 
-        return View(game);
-    }
-
-    [HttpGet]
-    public IActionResult AddGame()
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
+        public IActionResult Details(int id)
         {
-            return RedirectToAction("Index");
-        }
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> AddGame(Game game)
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
-        {
-            return RedirectToAction("Index");
+            var game = _context.Games.FirstOrDefault(g => g.Id == id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return View(game);
         }
 
-        if (ModelState.IsValid)
+        [HttpGet]
+        public IActionResult AddGame()
         {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddGame(Game game)
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Index");
+            }
+
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        return View(game);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> EditGame(int id)
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
+        [HttpGet]
+        public async Task<IActionResult> EditGame(int id)
         {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Index");
+            }
+
+            var game = await _context.Games.FindAsync(id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            return View(game);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditGame(Game game)
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Update(game);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            return View(game);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteGame(int id)
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Index");
+            }
+
+            var game = await _context.Games.FindAsync(id);
+            if (game != null)
+            {
+                _context.Games.Remove(game);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("Index");
         }
-
-        var game = await _context.Games.FindAsync(id);
-        if (game == null)
-        {
-            return NotFound();
-        }
-
-        return View(game);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> EditGame(Game game)
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
-        {
-            return RedirectToAction("Index");
-        }
-
-        if (ModelState.IsValid)
-        {
-            _context.Update(game);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        return View(game);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> DeleteGame(int id)
-    {
-        if (HttpContext.Session.GetString("IsAdmin") != "true")
-        {
-            return RedirectToAction("Index");
-        }
-
-        var game = await _context.Games.FindAsync(id);
-        if (game != null)
-        {
-            _context.Games.Remove(game);
-            await _context.SaveChangesAsync();
-        }
-
-        return RedirectToAction("Index");
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> AddComment(int gameId, string content)
-    {
-        var userId = HttpContext.Session.GetString("UserId");
-        if (userId == null) return RedirectToAction("Login", "Account");
-
-        var comment = new Comments
-        {
-            GameId = gameId,
-            UserId = int.Parse(userId),
-            Content = content,
-            CommentDate = DateTime.Now
-        };
-
-        _context.Comments.Add(comment);
-        await _context.SaveChangesAsync();
-
-        return RedirectToAction("Details", new { id = gameId });
-
     }
 }
