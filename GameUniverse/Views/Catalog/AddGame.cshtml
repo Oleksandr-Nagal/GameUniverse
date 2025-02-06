@@ -1,0 +1,38 @@
+﻿@model GameUniverse.Models.Game
+
+@{
+    ViewData["Title"] = "Додати Гру";
+}
+<h1 class="text-center">Додати Нову Гру</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Назва</label>
+        <input type="text" name="Title" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Опис</label>
+        <textarea name="Description" class="form-control" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Жанр</label>
+        <input type="text" name="Genre" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Розробник</label>
+        <input type="text" name="Developer" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Видавець</label>
+        <input type="text" name="Publisher" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Дата Виходу</label>
+        <input type="date" name="ReleaseDate" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">URL зображення</label>
+        <input type="text" name="ImageUrl" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Додати</button>
+</form>

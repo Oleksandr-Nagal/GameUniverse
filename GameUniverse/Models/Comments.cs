@@ -2,7 +2,7 @@
 
 namespace GameUniverse.Models
 {
-    public class Comment
+    public class Comments
     {
         public int Id { get; set; }
 
