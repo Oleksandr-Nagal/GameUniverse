@@ -4,10 +4,9 @@ namespace GameUniverse.Models
 {
     public class User
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required]
         public string Username { get; set; }
 
         [Required, EmailAddress]
@@ -17,7 +16,6 @@ namespace GameUniverse.Models
         public string PasswordHash { get; set; }
 
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
-
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; set; } = false;
     }
 }
