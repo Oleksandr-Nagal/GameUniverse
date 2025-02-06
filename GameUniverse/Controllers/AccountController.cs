@@ -28,6 +28,24 @@ namespace GameUniverse.Controllers
                 return View();
             }
 
+            if (_context.Users.Any(u => u.Username == username))
+            {
+                ViewBag.Error = "Це ім'я користувача вже зайняте";
+                return View();
+            }
+
+            if (username.Length < 4)
+            {
+                ViewBag.Error = "Ім'я користувача повинно містити мінімум 4 символи";
+                return View();
+            }
+
+            if (password.Length < 8)
+            {
+                ViewBag.Error = "Пароль повинен містити мінімум 8 символів";
+                return View();
+            }
+
             var user = new User
             {
                 Username = username,
@@ -41,13 +59,15 @@ namespace GameUniverse.Controllers
             return RedirectToAction("Login");
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
+        [HttpPost]
+        public async Task<IActionResult> Login(string identifier, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == identifier || u.Username == identifier);
             if (user == null || user.PasswordHash != HashPassword(password))
             {
-                ViewBag.Error = "Неправильний email або пароль";
+                ViewBag.Error = "Неправильний email/ім'я користувача або пароль";
                 return View();
             }
 
@@ -57,6 +77,8 @@ namespace GameUniverse.Controllers
 
             return user.IsAdmin ? RedirectToAction("Index", "Admin") : RedirectToAction("Index", "Home");
         }
+
+
 
         public IActionResult Logout()
         {

@@ -6,13 +6,13 @@ namespace GameUniverse.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required, MinLength(4)]
         public string Username { get; set; }
 
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required, MinLength(8)]
         public string PasswordHash { get; set; }
 
         public DateTime RegistrationDate { get; set; } = DateTime.Now;

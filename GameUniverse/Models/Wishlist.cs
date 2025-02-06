@@ -12,6 +12,9 @@ namespace GameUniverse.Models
         [ForeignKey("Game")]
         public int GameId { get; set; }
 
+        public User User { get; set; }
+        public Game Game { get; set; }
+
         public DateTime AddedDate { get; set; } = DateTime.Now;
     }
 }

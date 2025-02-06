@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = Model.Title;
+    var isInWishlist = ViewBag.IsInWishlist as bool?;
 }
 
 <div class="container mt-4">
@@ -17,6 +18,51 @@
             <p><strong>Видавець:</strong> @Model.Publisher</p>
             <p><strong>Дата виходу:</strong> @Model.ReleaseDate.ToShortDateString()</p>
             <a href="/Catalog" class="btn btn-secondary">Назад до каталогу</a>
+            @if (Context.Session.GetString("IsAdmin") != "true")
+            {
+                @if (isInWishlist == true)
+                {
+                    <a href="@Url.Action("Remove", "Wishlist", new { gameId = Model.Id })" class="btn btn-danger mt-2">Видалити з бажаного</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Add", "Wishlist", new { gameId = Model.Id })" class="btn btn-success mt-2">Додати у список бажань</a>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Коментарі</h3>
+            @if (Model.Comments.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <li class="list-group-item">
+                            <strong>@comment.User.Username</strong> <small class="text-muted">@comment.CommentDate</small>
+                            <p>@comment.Content</p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>Коментарів поки немає.</p>
+            }
+
+            @if (Context.Session.GetString("UserId") != null)
+            {
+                <form method="post" asp-action="AddComment">
+                    <input type="hidden" name="gameId" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label class="form-label">Ваш коментар</label>
+                        <textarea name="content" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Додати коментар</button>
+                </form>
+            }
         </div>
     </div>
 </div>

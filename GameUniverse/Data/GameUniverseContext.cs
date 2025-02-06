@@ -20,7 +20,7 @@ namespace GameUniverse.Data
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Comments> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
