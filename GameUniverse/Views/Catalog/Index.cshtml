@@ -1,5 +1,28 @@
-﻿@{
-    ViewData["Title"] = "Catalog";
+﻿@model List<GameUniverse.Models.Game>
+
+@{
+    ViewData["Title"] = "Каталог Ігор";
 }
-<h1>Catalog Page</h1>
-<p>Here you can browse games.</p>
+
+<h1 class="text-center mt-3">Каталог Ігор</h1>
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var game in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="@game.ImageUrl" class="card-img-top" alt="@game.Title">
+                    <div class="card-body">
+                        <h5 class="card-title">@game.Title</h5>
+                        <p class="card-text">@game.Description</p>
+                        <p><strong>Жанр:</strong> @game.Genre</p>
+                        <p><strong>Розробник:</strong> @game.Developer</p>
+                        <p><strong>Дата виходу:</strong> @game.ReleaseDate.ToShortDateString()</p>
+                        <a href="#" class="btn btn-primary">Детальніше</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

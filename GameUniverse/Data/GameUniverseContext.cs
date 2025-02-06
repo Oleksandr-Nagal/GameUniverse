@@ -17,7 +17,7 @@ namespace GameUniverse.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Developer> Developers { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
-        public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
         public DbSet<Comment> Comments { get; set; }
