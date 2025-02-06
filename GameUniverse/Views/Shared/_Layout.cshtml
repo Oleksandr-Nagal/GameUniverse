@@ -30,12 +30,6 @@
                         }
                         else
                         {
-                            @if (Context.Session.GetString("IsAdmin") == "true")
-                            {
-                                <li class="nav-item">
-                                    <a class="btn btn-warning me-2" asp-controller="Admin" asp-action="Index">Адмін Панель</a>
-                                </li>
-                            }
                             <li class="nav-item"><a class="nav-link text-dark" asp-controller="Wishlist" asp-action="Index">Список бажань</a></li>
                             <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">Профіль</a></li>
                             <li class="nav-item"><a class="btn btn-danger" asp-controller="Account" asp-action="Logout">Вихід</a></li>

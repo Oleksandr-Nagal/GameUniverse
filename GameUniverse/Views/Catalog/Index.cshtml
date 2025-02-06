@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Каталог Ігор";
-    var wishlist = ViewBag.Wishlist as List<int>;
 }
 
 <h1 class="text-center mt-3">Каталог Ігор</h1>
@@ -21,17 +20,6 @@
                         <p><strong>Розробник:</strong> @game.Developer</p>
                         <p><strong>Дата виходу:</strong> @game.ReleaseDate.ToShortDateString()</p>
                         <a href="@Url.Action("Details", "Catalog", new { id = game.Id })" class="btn btn-primary">Детальніше</a>
-                       @*  @if (Context.Session.GetString("IsAdmin") != "true")
-                        {
-                            @if (wishlist != null && wishlist.Contains(game.Id))
-                            {
-                                <a href="@Url.Action("Remove", "Wishlist", new { gameId = game.Id })" class="btn btn-danger mt-2">Видалити з бажаного</a>
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Add", "Wishlist", new { gameId = game.Id })" class="btn btn-success mt-2">Додати у список бажань</a>
-                            }
-                        } *@
                     </div>
                 </div>
             </div>

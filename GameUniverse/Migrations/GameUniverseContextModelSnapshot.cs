@@ -274,7 +274,8 @@ namespace GameUniverse.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -300,8 +301,6 @@ namespace GameUniverse.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
                     b.ToTable("Wishlist");
                 });
 
@@ -322,17 +321,6 @@ namespace GameUniverse.Migrations
                     b.Navigation("Game");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GameUniverse.Models.Wishlist", b =>
-                {
-                    b.HasOne("GameUniverse.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Game");
                 });
 #pragma warning restore 612, 618
         }
