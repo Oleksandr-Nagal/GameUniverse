@@ -19,7 +19,7 @@
                         <p><strong>Жанр:</strong> @game.Genre</p>
                         <p><strong>Розробник:</strong> @game.Developer</p>
                         <p><strong>Дата виходу:</strong> @game.ReleaseDate.ToShortDateString()</p>
-                        <a href="#" class="btn btn-primary">Детальніше</a>
+                        <a href="@Url.Action("Details", "Catalog", new { id = game.Id })" class="btn btn-primary">Детальніше</a>
                     </div>
                 </div>
             </div>
