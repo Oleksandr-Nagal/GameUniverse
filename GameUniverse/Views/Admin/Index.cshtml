@@ -5,7 +5,11 @@
 
 <p>Ласкаво просимо в адмін панель! Виберіть дію:</p>
 
-<ul>
-    <li><a asp-controller="Catalog" asp-action="Index">Редагувати ігри</a></li>
-    <li><a asp-controller="Admin" asp-action="Users">Керування користувачами</a></li>
+<ul class="list-group">
+    <li class="list-group-item">
+        <a asp-controller="Catalog" asp-action="Index" class="btn btn-primary w-100">Редагувати ігри</a>
+    </li>
+    <li class="list-group-item">
+        <a asp-controller="Admin" asp-action="Users" class="btn btn-primary w-100">Керування користувачами</a>
+    </li>
 </ul>

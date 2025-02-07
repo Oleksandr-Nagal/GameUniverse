@@ -11,7 +11,7 @@ namespace GameUniverse.Models
         public required string Genre { get; set; }
         public required string Developer { get; set; }
         public required string Publisher { get; set; }
-        public string? ImageUrl { get; set; }
+        public required string ImageUrl { get; set; }
         public required string Platform { get; set; }
     }
 }

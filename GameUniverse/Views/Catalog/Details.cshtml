@@ -17,20 +17,21 @@
             <p><strong>Розробник:</strong> @Model.Developer</p>
             <p><strong>Видавець:</strong> @Model.Publisher</p>
             <p><strong>Дата виходу:</strong> @Model.ReleaseDate.ToShortDateString()</p>
-            <a href="/Catalog" class="btn btn-secondary">Назад до каталогу</a>
-            @if (Context.Session.GetString("IsAdmin") != "true")
-            {
-                @if (isInWishlist == true)
+            <p><strong>Платформа:</strong> @Model.Platform</p>
+            <div class="d-grid gap-2">
+                <a href="/Catalog" class="btn btn-secondary">Назад до каталогу</a>
+                @if (Context.Session.GetString("IsAdmin") != "true")
                 {
-                    <a href="@Url.Action("Remove", "Wishlist", new { gameId = Model.Id })" class="btn btn-danger mt-2">Видалити з бажаного</a>
+                    @if (isInWishlist == true)
+                    {
+                        <a href="@Url.Action("Remove", "Wishlist", new { gameId = Model.Id })" class="btn btn-danger">Видалити з бажаного</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Add", "Wishlist", new { gameId = Model.Id })" class="btn btn-success">Додати у список бажань</a>
+                    }
                 }
-                else
-                {
-                    <a href="@Url.Action("Add", "Wishlist", new { gameId = Model.Id })" class="btn btn-success mt-2">Додати у список бажань</a>
-                }
-            }
+            </div>
         </div>
     </div>
-
-   
 </div>

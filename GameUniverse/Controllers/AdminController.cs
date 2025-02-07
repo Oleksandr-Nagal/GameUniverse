@@ -33,21 +33,27 @@ namespace GameUniverse.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var currentUserId = HttpContext.Session.GetString("UserId");
             var users = _context.Users.ToList();
+            ViewBag.CurrentUserId = currentUserId; // Передаємо currentUserId у ViewBag
             return View(users);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            var currentUserId = HttpContext.Session.GetString("UserId");
+            if (userId.ToString() == currentUserId || HttpContext.Session.GetString("IsAdmin") != "true")
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Users");
             }
 
             var user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
+                var wishlistItems = _context.Wishlist.Where(w => w.UserId == userId).ToList();
+                _context.Wishlist.RemoveRange(wishlistItems);
+
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameUniverse.Controllers
 {
+
     public class WishlistController : Controller
     {
         private readonly GameUniverseContext _context;
@@ -19,34 +20,13 @@ namespace GameUniverse.Controllers
         public IActionResult Index()
         {
             var userId = HttpContext.Session.GetString("UserId");
-            var isAdmin = HttpContext.Session.GetString("IsAdmin") == "true";
-
             if (userId == null) return RedirectToAction("Login", "Account");
 
-            if (isAdmin)
-            {
-                var allWishlists = _context.Wishlist.Include(w => w.Game).Include(w => w.User).ToList();
-                return View("AdminIndex", allWishlists);
-            }
-            else
-            {
-                var userWishlist = _context.Wishlist.Include(w => w.Game).Where(w => w.UserId == int.Parse(userId)).ToList();
-                return View(userWishlist);
-            }
-        }
-
-        public IActionResult AdminIndex()
-        {
-            if (HttpContext.Session.GetString("IsAdmin") != "true")
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var wishlists = _context.Wishlist
-                .Include(w => w.User)
+            var wishlist = _context.Wishlist
                 .Include(w => w.Game)
+                .Where(w => w.UserId == int.Parse(userId))
                 .ToList();
-            return View(wishlists);
+            return View(wishlist);
         }
 
         public async Task<IActionResult> Add(int gameId)
@@ -64,7 +44,6 @@ namespace GameUniverse.Controllers
             return RedirectToAction("Details", "Catalog", new { id = gameId });
         }
 
-
         public async Task<IActionResult> Remove(int gameId)
         {
             var userId = HttpContext.Session.GetString("UserId");
@@ -79,5 +58,22 @@ namespace GameUniverse.Controllers
 
             return RedirectToAction("Details", "Catalog", new { id = gameId });
         }
+
+        public IActionResult AdminIndex()
+        {
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var wishlists = _context.Wishlist
+                .Include(w => w.User)
+                .Include(w => w.Game)
+                .ToList();
+            return View(wishlists);
+        }
+
+
     }
 }
+

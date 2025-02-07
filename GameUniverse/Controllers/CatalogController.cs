@@ -5,6 +5,7 @@ using GameUniverse.Data;
 using GameUniverse.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GameUniverse.Controllers
 {
@@ -17,10 +18,36 @@ namespace GameUniverse.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, string genre, string platform)
         {
-            var games = _context.Games.ToList();
-            return View(games);
+            var games = _context.Games.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                games = games.Where(g => g.Title.Contains(searchString) || g.Description.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                games = games.Where(g => g.Genre == genre);
+            }
+
+            if (!string.IsNullOrEmpty(platform))
+            {
+                games = games.Where(g => g.Platform == platform);
+            }
+
+            var genres = _context.Games.Select(g => g.Genre).Distinct().ToList();
+            var platforms = _context.Games.Select(g => g.Platform).Distinct().ToList();
+
+            ViewBag.Genres = new SelectList(genres, genre);
+            ViewBag.Platforms = new SelectList(platforms, platform);
+
+            ViewData["searchString"] = searchString;
+            ViewData["selectedGenre"] = genre;
+            ViewData["selectedPlatform"] = platform;
+
+            return View(games.ToList());
         }
 
         public IActionResult Details(int id)
@@ -30,6 +57,14 @@ namespace GameUniverse.Controllers
             {
                 return NotFound();
             }
+
+            var userId = HttpContext.Session.GetString("UserId");
+            if (userId != null)
+            {
+                var isInWishlist = _context.Wishlist.Any(w => w.UserId == int.Parse(userId) && w.GameId == id);
+                ViewBag.IsInWishlist = isInWishlist;
+            }
+
             return View(game);
         }
 
@@ -40,6 +75,11 @@ namespace GameUniverse.Controllers
             {
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Platforms = _context.Platforms.Select(p => p.Name).ToList();
+            ViewBag.Genres = _context.Genres.Select(g => g.Name).ToList();
+            ViewBag.Publishers = _context.Games.Select(g => g.Publisher).Distinct().ToList();
+            ViewBag.Developers = _context.Games.Select(g => g.Developer).Distinct().ToList();
             return View();
         }
 
@@ -51,9 +91,23 @@ namespace GameUniverse.Controllers
                 return RedirectToAction("Index");
             }
 
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (!string.IsNullOrEmpty(game.ImageUrl))
+            {
+                game.ImageUrl = "/images/" + game.ImageUrl;
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Games.Add(game);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Platforms = _context.Platforms.Select(p => p.Name).ToList();
+            ViewBag.Genres = _context.Genres.Select(g => g.Name).ToList();
+            ViewBag.Publishers = _context.Games.Select(g => g.Publisher).Distinct().ToList();
+            ViewBag.Developers = _context.Games.Select(g => g.Developer).Distinct().ToList();
+            return View(game);
         }
 
         [HttpGet]
@@ -70,6 +124,10 @@ namespace GameUniverse.Controllers
                 return NotFound();
             }
 
+            ViewBag.Platforms = _context.Platforms.Select(p => p.Name).ToList();
+            ViewBag.Genres = _context.Genres.Select(g => g.Name).ToList();
+            ViewBag.Publishers = _context.Games.Select(g => g.Publisher).Distinct().ToList();
+            ViewBag.Developers = _context.Games.Select(g => g.Developer).Distinct().ToList();
             return View(game);
         }
 
@@ -81,6 +139,11 @@ namespace GameUniverse.Controllers
                 return RedirectToAction("Index");
             }
 
+            if (!string.IsNullOrEmpty(game.ImageUrl))
+            {
+                game.ImageUrl = "/images/" + game.ImageUrl;
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Update(game);
@@ -88,6 +151,10 @@ namespace GameUniverse.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Platforms = _context.Platforms.Select(p => p.Name).ToList();
+            ViewBag.Genres = _context.Genres.Select(g => g.Name).ToList();
+            ViewBag.Publishers = _context.Games.Select(g => g.Publisher).Distinct().ToList();
+            ViewBag.Developers = _context.Games.Select(g => g.Developer).Distinct().ToList();
             return View(game);
         }
 

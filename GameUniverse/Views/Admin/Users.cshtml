@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Користувачі";
+    var currentUserId = ViewBag.CurrentUserId;
 }
 
 <h1 class="text-center">Список Користувачів</h1>
@@ -18,17 +19,20 @@
     <tbody>
         @foreach (var user in Model)
         {
-            <tr>
-                <td>@user.Username</td>
-                <td>@user.Email</td>
-                <td>@(user.IsAdmin ? "Адмін" : "Користувач")</td>
-                <td>
-                    <form asp-controller="Admin" asp-action="DeleteUser" method="post" class="d-inline">
-                        <input type="hidden" name="userId" value="@user.Id" />
-                        <button type="submit" class="btn btn-danger">Видалити</button>
-                    </form>
-                </td>
-            </tr>
+            if (user.Id.ToString() != currentUserId)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@user.Email</td>
+                    <td>@(user.IsAdmin ? "Адмін" : "Користувач")</td>
+                    <td>
+                        <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit" class="btn btn-danger">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
