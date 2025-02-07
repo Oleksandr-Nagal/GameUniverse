@@ -7,22 +7,32 @@ GameUniverse - це унікальна платформа, створена дл
 ### Головна Сторінка
 
 На головній сторінці користувачі можуть переглядати останні новини та можливості сайту, а також зв'язуватися з нами.
+![image](https://github.com/user-attachments/assets/3250c3f3-7aae-4a83-894d-c5ed53e3d75a)
+
 
 ### Каталог Ігор
 
 Користувачі можуть переглядати каталог ігор, фільтрувати за жанрами та платформами, а також шукати ігри за назвою або описом.
+![image](https://github.com/user-attachments/assets/b7072c95-5da1-4fab-8465-bb9f543e5735)
+
 
 ### Профіль Користувача
 
-Користувачі можуть переглядати і редагувати свій профіль, включаючи ім'я користувача та електронну пошту.
+Користувачі можуть переглядати свій профіль, включаючи ім'я користувача та електронну пошту.
+![image](https://github.com/user-attachments/assets/973c839b-aeab-4e9e-96b4-946db16c6193)
 
 ### Список Бажань
 
 Користувачі можуть додавати ігри до свого списку бажань та переглядати його.
+![image](https://github.com/user-attachments/assets/c588a82f-18af-400e-be2e-9d13a1d4d0b6)
 
 ### Адмін Панель
 
 Адміністратори можуть керувати користувачами та іграми через адмін панель.
+![image](https://github.com/user-attachments/assets/7d0f84ee-4e6e-45a6-8f1d-6a7677a82345)
+![image](https://github.com/user-attachments/assets/32d536f2-cf47-4c9d-b222-8a096926d2db)
+![image](https://github.com/user-attachments/assets/accf8b9a-6826-4015-a5fd-0fb92b5049d3)
+![image](https://github.com/user-attachments/assets/164ccd20-0b3a-4acc-846d-b531728602ba)
 
 ## Вклад
 
