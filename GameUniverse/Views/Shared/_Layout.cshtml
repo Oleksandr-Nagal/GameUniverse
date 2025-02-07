@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - GameUniverse</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/GameUniverse.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -20,7 +21,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Головна</a></li>
                         <li class="nav-item"><a class="nav-link text-dark" asp-controller="Catalog" asp-action="Index">Каталог</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="About" asp-action="Index">Про нас</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="About">Про нас</a></li>
                     </ul>
                     <ul class="navbar-nav">
                         @if (Context.Session.GetString("UserId") == null)
