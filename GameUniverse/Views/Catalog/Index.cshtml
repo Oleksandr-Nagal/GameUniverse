@@ -25,7 +25,6 @@
                 <option value="">Всі Платформи</option>
                 @foreach (var platform in (SelectList)ViewBag.Platforms)
                 {
-
                     <option value="@platform.Value" selected="@(platform.Value == ViewData["selectedPlatform"]?.ToString())">@platform.Text</option>
                 }
             </select>
@@ -35,6 +34,8 @@
         </div>
     </div>
 </form>
+
+
 
 @if (Context.Session.GetString("IsAdmin") == "true")
 {

@@ -29,19 +29,16 @@ namespace GameUniverse.Controllers
 
             if (!string.IsNullOrEmpty(genre))
             {
-                games = games.Where(g => g.Genre == genre);
+                games = games.Where(g => (g.Genre ?? "").Equals(genre));
             }
 
             if (!string.IsNullOrEmpty(platform))
             {
-                games = games.Where(g => g.Platform == platform);
+                games = games.Where(g => (g.Platform ?? "").Equals(platform));
             }
 
-            var genres = _context.Games.Select(g => g.Genre).Distinct().ToList();
-            var platforms = _context.Games.Select(g => g.Platform).Distinct().ToList();
-
-            ViewBag.Genres = new SelectList(genres, genre);
-            ViewBag.Platforms = new SelectList(platforms, platform);
+            ViewBag.Genres = new SelectList(_context.Genres.OrderBy(g => g.Name), "Name", "Name");
+            ViewBag.Platforms = new SelectList(_context.Platforms.OrderBy(p => p.Name), "Name", "Name");
 
             ViewData["searchString"] = searchString;
             ViewData["selectedGenre"] = genre;
@@ -49,6 +46,10 @@ namespace GameUniverse.Controllers
 
             return View(games.ToList());
         }
+
+
+
+
 
         public IActionResult Details(int id)
         {
